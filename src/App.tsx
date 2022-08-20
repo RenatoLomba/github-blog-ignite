@@ -1,3 +1,5 @@
+import { Box } from '@chakra-ui/react'
+
 export function App() {
-  return <h1>Hello world</h1>
+  return <Box bgColor="babyblue.500">Hello world</Box>
 }
