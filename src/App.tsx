@@ -1,5 +1,11 @@
-import { Box } from '@chakra-ui/react'
+import { Flex } from '@chakra-ui/react'
+
+import { TextInput } from './components/text-input'
 
 export function App() {
-  return <Box bgColor="babyblue.500">Hello world</Box>
+  return (
+    <Flex w="100%" padding={6}>
+      <TextInput placeholder="Buscar conteúdo" />
+    </Flex>
+  )
 }
