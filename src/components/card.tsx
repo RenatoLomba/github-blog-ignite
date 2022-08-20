@@ -23,7 +23,6 @@ export const Card: FC = () => {
 
       <Text
         mt="5"
-        // whiteSpace="nowrap"
         overflow="hidden"
         text-overflow="ellipsis"
         sx={{
