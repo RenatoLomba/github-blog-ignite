@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, SVGProps } from 'react'
 
 import {
   Link as ChakraLink,
@@ -6,11 +6,17 @@ import {
   Icon,
 } from '@chakra-ui/react'
 
-import { FaArrowUpRightFromSquare } from './fa-arrow-up-right-from-square'
+type LinkProps = {
+  leftIcon?: FC<SVGProps<SVGSVGElement>>
+  rightIcon?: FC<SVGProps<SVGSVGElement>>
+} & ChakraLinkProps
 
-type LinkProps = ChakraLinkProps
-
-export const Link: FC<LinkProps> = ({ children }) => {
+export const Link: FC<LinkProps> = ({
+  children,
+  leftIcon,
+  rightIcon,
+  ...props
+}) => {
   return (
     <ChakraLink
       width="fit-content"
@@ -25,9 +31,11 @@ export const Link: FC<LinkProps> = ({ children }) => {
       display="flex"
       alignItems="center"
       gap="2"
+      {...props}
     >
+      {leftIcon && <Icon fill="babyblue.500" as={leftIcon} />}
       <span>{children}</span>
-      <Icon fill="babyblue.500" as={FaArrowUpRightFromSquare} />
+      {rightIcon && <Icon fill="babyblue.500" as={rightIcon} />}
     </ChakraLink>
   )
 }
