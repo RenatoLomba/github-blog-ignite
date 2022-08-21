@@ -1,27 +1,33 @@
-import { FaChevronLeft } from 'react-icons/fa'
+import { Box, Flex, Image } from '@chakra-ui/react'
 
-import { Box, Flex } from '@chakra-ui/react'
+import { HomePage } from './pages/home'
 
-import { Card } from './components/card'
-import { FaArrowUpRightFromSquare } from './components/fa-arrow-up-right-from-square'
-import { Link } from './components/link'
-import { TextInput } from './components/text-input'
+function Header() {
+  return (
+    <Flex
+      as="header"
+      w="100%"
+      h="296px"
+      justify="center"
+      pt="16"
+      pb="134px"
+      backgroundImage="url('/cover.png')"
+      backgroundRepeat="no-repeat"
+      backgroundSize="cover"
+    >
+      <Image w="148px" h="98px" src="/logo.svg" alt="" />
+    </Flex>
+  )
+}
 
 export function App() {
   return (
-    <Flex w="100%" maxWidth="1312px" mx="auto" pt="10" gap="4" flexDir="column">
-      <TextInput placeholder="Buscar conteúdo" />
+    <Box>
+      <Header />
 
-      <Box>
-        <Link rightIcon={FaArrowUpRightFromSquare}>Github</Link>
-        <Link leftIcon={FaChevronLeft}>Voltar</Link>
+      <Box as="main" w="100%" maxWidth="1312px" mx="auto" mt="-92px">
+        <HomePage />
       </Box>
-
-      <Flex w="100%" flexWrap="wrap" gap="8">
-        <Card />
-        <Card />
-        <Card />
-      </Flex>
-    </Flex>
+    </Box>
   )
 }
