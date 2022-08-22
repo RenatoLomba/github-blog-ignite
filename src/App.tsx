@@ -25,7 +25,7 @@ export function App() {
     <Box>
       <Header />
 
-      <Box as="main" w="100%" maxWidth="1312px" mx="auto" mt="-92px">
+      <Box as="main" w="100%" maxWidth="1344px" mx="auto" mt="-92px" px="4">
         <HomePage />
       </Box>
     </Box>
