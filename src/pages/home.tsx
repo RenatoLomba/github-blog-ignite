@@ -15,13 +15,7 @@ export function HomePage() {
       <Box mt="72px">
         <SearchForm />
 
-        <Flex
-          gap={['4', '8']}
-          flexWrap="wrap"
-          mt="12"
-          justify="center"
-          pb={['4', '8']}
-        >
+        <Flex gap={['4', '8']} flexWrap="wrap" mt="12" pb={['4', '8']}>
           <Card />
           <Card />
           <Card />
