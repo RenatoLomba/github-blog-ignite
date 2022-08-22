@@ -3,6 +3,10 @@ import { extendTheme } from '@chakra-ui/react'
 export const theme = extendTheme({
   styles: {
     global: {
+      '::selection': {
+        bg: 'babyblue.500',
+        color: 'marine.50',
+      },
       body: {
         bgColor: 'marine.800',
         color: 'marine.200',
