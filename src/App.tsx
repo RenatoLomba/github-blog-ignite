@@ -29,15 +29,6 @@ function Header() {
   )
 }
 
-const routes = [
-  { path: '/', element: <HomePage /> },
-  { path: '/issue', element: <IssuePage /> },
-]
-
-const location = new ReactLocation()
-
-const queryClient = new QueryClient()
-
 export const api = axios.create({
   baseURL: 'https://api.github.com',
 })
@@ -51,7 +42,7 @@ type GithubUsersResponse = {
   followers: number
 }
 
-const username = 'renatolomba'
+export const username = 'renatolomba'
 
 export function useUser() {
   return useQuery(
@@ -64,6 +55,17 @@ export function useUser() {
     },
   )
 }
+
+export const githubRepo = 'github-blog-ignite'
+
+const location = new ReactLocation()
+
+const routes = [
+  { path: '/', element: <HomePage /> },
+  { path: '/issue', element: <IssuePage /> },
+]
+
+const queryClient = new QueryClient()
 
 export function App() {
   return (

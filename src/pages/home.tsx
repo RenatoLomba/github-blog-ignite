@@ -1,40 +1,106 @@
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
 import { FaGithub, FaBuilding, FaUsers } from 'react-icons/fa'
 
 import {
   Avatar,
   Box,
+  Button,
   Flex,
   Heading,
+  HStack,
   Icon,
   Spinner,
   Text,
 } from '@chakra-ui/react'
+import { useQuery } from '@tanstack/react-query'
 
-import { useUser } from '../App'
+import { api, githubRepo, useUser } from '../App'
 import { Card } from '../components/card'
 import { FaArrowUpRightFromSquare } from '../components/fa-arrow-up-right-from-square'
 import { Link } from '../components/link'
 import { TextInput } from '../components/text-input'
 
+type GithubIssuesResponse = {
+  total_count: number
+  items: {
+    id: number
+    number: number
+    title: string
+    body: string
+    created_at: string
+  }[]
+}
+
+function useIssues(searchText: string, username?: string) {
+  return useQuery(
+    ['issues', searchText, username],
+    async () => {
+      if (!username) return null
+
+      const { data } = await api.get<GithubIssuesResponse>(
+        `/search/issues?q=${searchText}%20repo:${username}/${githubRepo}`,
+      )
+
+      return {
+        ...data,
+        items: data.items.map((item) => ({
+          ...item,
+          created_at: new Date(item.created_at),
+        })),
+      }
+    },
+    {
+      staleTime: 1000 * 60 * 2,
+    },
+  )
+}
+
 export function HomePage() {
-  const { data: user, isLoading } = useUser()
+  const { data: user, isLoading: isLoadingUser } = useUser()
+
+  const [searchText, setSearchText] = useState('')
+
+  const { data: issues, isLoading: isLoadingIssues } = useIssues(
+    searchText,
+    user?.login,
+  )
+
+  function onSearchFormSubmit(inputText: string) {
+    setSearchText(inputText)
+  }
+
+  function onCleanSearchForm() {
+    setSearchText('')
+  }
 
   return (
     <Box>
       <HeaderCard />
 
       <Box mt="72px">
-        {!isLoading && user ? (
+        {!isLoadingUser && user ? (
           <>
-            <SearchForm />
+            <SearchForm
+              searchText={searchText}
+              onSubmit={onSearchFormSubmit}
+              onClean={onCleanSearchForm}
+            />
 
-            <Flex gap={['4', '8']} flexWrap="wrap" mt="12" pb={['4', '8']}>
-              <Card />
-              <Card />
-              <Card />
-              <Card />
-              <Card />
-            </Flex>
+            {!isLoadingIssues && issues ? (
+              <Flex gap={['4', '8']} flexWrap="wrap" pb={['4', '8']}>
+                {issues.items.map((issue) => (
+                  <Card
+                    key={issue.id}
+                    title={issue.title}
+                    description={issue.body}
+                    createdAt={issue.created_at}
+                  />
+                ))}
+              </Flex>
+            ) : (
+              <Spinner />
+            )}
           </>
         ) : (
           <Spinner />
@@ -44,19 +110,53 @@ export function HomePage() {
   )
 }
 
-function SearchForm() {
+function SearchForm({
+  searchText = '',
+  onSubmit,
+  onClean,
+}: {
+  searchText?: string
+  onSubmit: (inputText: string) => void
+  onClean: () => void
+}) {
+  const { data: user } = useUser()
+  const { data: issues } = useIssues(searchText, user?.login!)
+
+  const { register, handleSubmit, reset } = useForm<{ searchText: string }>()
+
   return (
-    <Box as="form">
+    <Box
+      as="form"
+      onSubmit={handleSubmit((data) => onSubmit(data.searchText))}
+      mb={12}
+    >
       <Flex w="100%" justify="space-between" align="flex-start">
         <Heading fontSize="lg" color="marine.100">
           Publicações
         </Heading>
         <Box as="span" fontSize="sm" color="marine.300">
-          6 publicações
+          {issues?.total_count} publicações
         </Box>
       </Flex>
 
-      <TextInput mt="3" placeholder="Buscar conteúdo" />
+      <HStack align="flex-end" spacing={4}>
+        <TextInput
+          flex="1"
+          {...register('searchText')}
+          mt="3"
+          placeholder="Buscar conteúdo"
+        />
+
+        <Button
+          colorScheme="marine"
+          onClick={() => {
+            onClean()
+            reset()
+          }}
+        >
+          Limpar
+        </Button>
+      </HStack>
     </Box>
   )
 }
