@@ -6,6 +6,7 @@ import {
 } from 'react-icons/fa'
 
 import { Box, Flex, Heading, Icon, Text } from '@chakra-ui/react'
+import { Link as LocationLink } from '@tanstack/react-location'
 
 import { FaArrowUpRightFromSquare } from '../components/fa-arrow-up-right-from-square'
 import { Link } from '../components/link'
@@ -50,7 +51,9 @@ function HeaderCard() {
   return (
     <Box w="100%" bg="marine.700" p="8" borderRadius="10px">
       <Flex justify="space-between" mb={5}>
-        <Link leftIcon={FaChevronLeft}>Voltar</Link>
+        <LocationLink to="/">
+          <Link leftIcon={FaChevronLeft}>Voltar</Link>
+        </LocationLink>
         <Link rightIcon={FaArrowUpRightFromSquare}>Ver no Github</Link>
       </Flex>
       <Heading fontSize="2xl" color="marine.50">

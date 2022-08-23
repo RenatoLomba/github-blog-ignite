@@ -1,27 +1,44 @@
 import { FaGithub, FaBuilding, FaUsers } from 'react-icons/fa'
 
-import { Box, Flex, Heading, Icon, Image, Text } from '@chakra-ui/react'
+import {
+  Avatar,
+  Box,
+  Flex,
+  Heading,
+  Icon,
+  Spinner,
+  Text,
+} from '@chakra-ui/react'
 
+import { useUser } from '../App'
 import { Card } from '../components/card'
 import { FaArrowUpRightFromSquare } from '../components/fa-arrow-up-right-from-square'
 import { Link } from '../components/link'
 import { TextInput } from '../components/text-input'
 
 export function HomePage() {
+  const { data: user, isLoading } = useUser()
+
   return (
     <Box>
       <HeaderCard />
 
       <Box mt="72px">
-        <SearchForm />
+        {!isLoading && user ? (
+          <>
+            <SearchForm />
 
-        <Flex gap={['4', '8']} flexWrap="wrap" mt="12" pb={['4', '8']}>
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-        </Flex>
+            <Flex gap={['4', '8']} flexWrap="wrap" mt="12" pb={['4', '8']}>
+              <Card />
+              <Card />
+              <Card />
+              <Card />
+              <Card />
+            </Flex>
+          </>
+        ) : (
+          <Spinner />
+        )}
       </Box>
     </Box>
   )
@@ -45,6 +62,8 @@ function SearchForm() {
 }
 
 function HeaderCard() {
+  const { data: user } = useUser()
+
   return (
     <Box w="100%" bg="marine.700" py="8" pr="8" pl="10" borderRadius="10px">
       <Flex
@@ -53,9 +72,9 @@ function HeaderCard() {
         w="100%"
         gap="8"
       >
-        <Image
-          src="https://github.com/RenatoLomba.png"
-          alt="Renato Lomba"
+        <Avatar
+          src={user?.avatar_url}
+          name={user?.name}
           w="148px"
           h="148px"
           borderRadius="lg"
@@ -70,32 +89,34 @@ function HeaderCard() {
             gap={2}
           >
             <Heading fontSize="2xl" color="marine.50">
-              Renato Lomba
+              {user?.name}
             </Heading>
 
-            <Link rightIcon={FaArrowUpRightFromSquare}>Github</Link>
+            <Link
+              rightIcon={FaArrowUpRightFromSquare}
+              href={`https://github.com/${user?.login}`}
+              target="_blank"
+            >
+              Github
+            </Link>
           </Flex>
 
-          <Text mb={6}>
-            Tristique volutpat pulvinar vel massa, pellentesque egestas. Eu
-            viverra massa quam dignissim aenean malesuada suscipit. Nunc,
-            volutpat pulvinar vel mass.
-          </Text>
+          <Text mb={6}>{user?.bio}</Text>
 
           <Flex columnGap={6} rowGap={2} flexWrap="wrap">
             <Flex align="center" gap={2}>
               <Icon color="marine.400" as={FaGithub} />
-              <span>renatolomba20</span>
+              <span>{user?.login}</span>
             </Flex>
 
             <Flex align="center" gap={2}>
               <Icon color="marine.400" as={FaBuilding} />
-              <span>Rocketseat</span>
+              <span>{user?.company || '-'}</span>
             </Flex>
 
             <Flex align="center" gap={2}>
               <Icon color="marine.400" as={FaUsers} />
-              <span>32 seguidores</span>
+              <span>{user?.followers} seguidores</span>
             </Flex>
           </Flex>
         </Box>

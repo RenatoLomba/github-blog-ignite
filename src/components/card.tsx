@@ -27,8 +27,8 @@ export const Card: FC = () => {
         text-overflow="ellipsis"
         sx={{
           display: '-webkit-box',
-          '-webkit-line-clamp': '4',
-          '-webkit-box-orient': 'vertical',
+          WebkitLineClamp: '4',
+          WebkitBoxOrient: 'vertical',
         }}
       >
         Programming languages all have built-in data structures, but these often

@@ -1,5 +1,12 @@
+import axios from 'axios'
+
 import { Box, Flex, Image } from '@chakra-ui/react'
 import { ReactLocation, Router } from '@tanstack/react-location'
+import {
+  QueryClient,
+  QueryClientProvider,
+  useQuery,
+} from '@tanstack/react-query'
 
 import { HomePage } from './pages/home'
 import { IssuePage } from './pages/issue'
@@ -29,14 +36,43 @@ const routes = [
 
 const location = new ReactLocation()
 
+const queryClient = new QueryClient()
+
+export const api = axios.create({
+  baseURL: 'https://api.github.com',
+})
+
+type GithubUsersResponse = {
+  name: string
+  avatar_url: string
+  bio: string
+  login: string
+  company: string | null
+  followers: number
+}
+
+const username = 'renatolomba'
+
+export function useUser() {
+  return useQuery(
+    ['user'],
+    async () => {
+      return (await api.get<GithubUsersResponse>(`/users/${username}`)).data
+    },
+    {
+      staleTime: 1000 * 60 * 5,
+    },
+  )
+}
+
 export function App() {
   return (
-    <Box>
+    <QueryClientProvider client={queryClient}>
       <Header />
 
       <Box as="main" w="100%" maxWidth="1344px" mx="auto" mt="-92px" px="4">
         <Router location={location} routes={routes} />
       </Box>
-    </Box>
+    </QueryClientProvider>
   )
 }
