@@ -95,7 +95,7 @@ function HeaderCard() {
         {data?.title}
       </Heading>
 
-      <Flex columnGap={8} rowGap={2} flexWrap="wrap" mt={2}>
+      <Flex columnGap={8} rowGap={2} flexWrap="wrap" mt={[8, 2]}>
         <Flex align="center" gap={2}>
           <Icon color="marine.400" as={FaGithub} />
           <Box color="marine.300">{data?.user.login}</Box>
