@@ -1,14 +1,27 @@
 import { formatDistanceToNow } from 'date-fns'
 import ptBR from 'date-fns/locale/pt-BR'
 import { FC } from 'react'
+import ReactMarkdown from 'react-markdown'
 
-import { Box, Flex, Heading, Text } from '@chakra-ui/react'
+import { Box, chakra, Flex, Heading, Text } from '@chakra-ui/react'
 
 type CardProps = {
   title: string
   description: string
   createdAt: Date
 }
+
+const MarkdownContainer = chakra(Box, {
+  baseStyle: {
+    mt: '5',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    display: '-webkit-box',
+    WebkitLineClamp: ['6', '4'],
+    WebkitBoxOrient: 'vertical',
+    fontSize: ['xs', 'md'],
+  },
+})
 
 export const Card: FC<CardProps> = ({ title, description, createdAt }) => {
   return (
@@ -30,18 +43,9 @@ export const Card: FC<CardProps> = ({ title, description, createdAt }) => {
         </Text>
       </Flex>
 
-      <Text
-        mt="5"
-        overflow="hidden"
-        text-overflow="ellipsis"
-        sx={{
-          display: '-webkit-box',
-          WebkitLineClamp: '4',
-          WebkitBoxOrient: 'vertical',
-        }}
-      >
-        {description}
-      </Text>
+      <MarkdownContainer>
+        <ReactMarkdown>{description}</ReactMarkdown>
+      </MarkdownContainer>
     </Box>
   )
 }

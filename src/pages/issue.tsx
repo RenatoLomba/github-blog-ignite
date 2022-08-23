@@ -6,8 +6,9 @@ import {
   FaComment,
   FaGithub,
 } from 'react-icons/fa'
+import ReactMarkdown from 'react-markdown'
 
-import { Box, Flex, Heading, Icon, Spinner, Text } from '@chakra-ui/react'
+import { Box, chakra, Flex, Heading, Icon, Spinner } from '@chakra-ui/react'
 import { Link as LocationLink, useMatch } from '@tanstack/react-location'
 import { useQuery } from '@tanstack/react-query'
 
@@ -55,6 +56,26 @@ function useIssue() {
   )
 }
 
+const MarkdownContainer = chakra(Box, {
+  baseStyle: {
+    px: 8,
+    py: 10,
+    h3: {
+      color: 'babyblue.500',
+      textDecoration: 'underline',
+      mt: 8,
+    },
+    pre: {
+      bg: 'marine.600',
+      p: 4,
+      mt: 4,
+      borderRadius: '2px',
+      fontSize: ['sm', 'md'],
+      overflow: 'auto',
+    },
+  },
+})
+
 export function IssuePage() {
   const { data, isLoading } = useIssue()
 
@@ -64,9 +85,9 @@ export function IssuePage() {
     <Box>
       <HeaderCard />
 
-      <Box px="8" py="10">
-        <Text>{data.body}</Text>
-      </Box>
+      <MarkdownContainer>
+        <ReactMarkdown>{data.body}</ReactMarkdown>
+      </MarkdownContainer>
     </Box>
   )
 }
