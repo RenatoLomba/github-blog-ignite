@@ -13,6 +13,7 @@ import {
   Spinner,
   Text,
 } from '@chakra-ui/react'
+import { Link as LocationLink } from '@tanstack/react-location'
 import { useQuery } from '@tanstack/react-query'
 
 import { api, githubRepo, useUser } from '../App'
@@ -90,12 +91,13 @@ export function HomePage() {
             {!isLoadingIssues && issues ? (
               <Flex gap={['4', '8']} flexWrap="wrap" pb={['4', '8']}>
                 {issues.items.map((issue) => (
-                  <Card
-                    key={issue.id}
-                    title={issue.title}
-                    description={issue.body}
-                    createdAt={issue.created_at}
-                  />
+                  <LocationLink key={issue.id} to={`/issue/${issue.number}`}>
+                    <Card
+                      title={issue.title}
+                      description={issue.body}
+                      createdAt={issue.created_at}
+                    />
+                  </LocationLink>
                 ))}
               </Flex>
             ) : (

@@ -62,7 +62,7 @@ const location = new ReactLocation()
 
 const routes = [
   { path: '/', element: <HomePage /> },
-  { path: '/issue', element: <IssuePage /> },
+  { path: '/issue/:issueNumber', element: <IssuePage /> },
 ]
 
 const queryClient = new QueryClient()
