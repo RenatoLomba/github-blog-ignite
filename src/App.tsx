@@ -42,7 +42,7 @@ type GithubUsersResponse = {
   followers: number
 }
 
-export const username = 'renatolomba'
+export const username = import.meta.env.VITE_USERNAME
 
 export function useUser() {
   return useQuery(
@@ -56,7 +56,7 @@ export function useUser() {
   )
 }
 
-export const githubRepo = 'github-blog-ignite'
+export const githubRepo = import.meta.env.VITE_GITHUBREPO
 
 const location = new ReactLocation()
 
